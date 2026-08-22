@@ -1,8 +1,7 @@
 # Vigil
 
 Detects individual fraudulent transactions AND flags when fraud is spiking
-above the recent baseline rate — built for the Razorpay Buildathon
-(AI Risk Manager track).
+above the recent baseline rate.
 
 ## What it does
 1. Trains a classifier on labeled transactions (fraud vs genuine).
