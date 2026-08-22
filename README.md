@@ -1,4 +1,4 @@
-# Fraud-Spike Detector
+# Vigil
 
 Detects individual fraudulent transactions AND flags when fraud is spiking
 above the recent baseline rate — built for the Razorpay Buildathon
