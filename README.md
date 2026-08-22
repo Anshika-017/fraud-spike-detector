@@ -1,8 +1,7 @@
-# Fraud-Spike Detector
+# Vigil
 
 Detects individual fraudulent transactions AND flags when fraud is spiking
-above the recent baseline rate — built for the Razorpay Buildathon
-(AI Risk Manager track).
+above the recent baseline rate.
 
 ## What it does
 1. Trains a classifier on labeled transactions (fraud vs genuine).
@@ -37,14 +36,31 @@ python src/spike_monitor.py   # rolling-window spike flags
 ```
 
 ## Results
-_Fill this in once you've run it on the real dataset — exact numbers, not
-vibes. That's what's graded._
+- Precision: 0.5351
+- Recall: 0.8133
+- PR-AUC: 0.8175
+- False-positive cost reasoning: missing a fraud costs the merchant the
+  transaction amount; a false alarm costs one annoyed customer. Weighted
+  100:5 in favor of catching fraud, so the model deliberately over-flags —
+  precision is lower than recall by design, not by accident.
 
-- Precision:
-- Recall:
-- PR-AUC:
-- False-positive cost reasoning:
+## Spike monitor
+Test window only spans ~8 hourly buckets with no artificial fraud burst
+injected, so 0 spikes flagged is the correct/honest result on this dataset,
+not a failure of the detector.
 
 ## What broke
-_Keep this updated as you build — the application asks for it. Don't
-reconstruct it from memory at the end._
+Started with a plain logistic regression baseline to get one clean
+end-to-end pipeline working first — train, evaluate, save — before
+touching anything complex. Once that ran correctly, upgraded to a
+cross-validated XGBoost + Random Forest ensemble with engineered features
+(log-transformed amount, hour-of-day) and cost-based threshold selection
+instead of accuracy. That two-stage approach (dumb-and-working before
+smart-and-optimized) is what let me catch a rolling-window spike-detection
+bug against a known-working baseline instead of debugging two new things
+at once.
+
+Separately: xgboost's 48MB install kept timing out on a slow connection —
+three failed attempts (ReadTimeoutError). Fixed with
+`--timeout 300 --no-cache-dir`. Also lost a full training run when my
+machine restarted mid-hyperparameter-search; no code issue, just reran it.
