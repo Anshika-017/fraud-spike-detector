@@ -51,5 +51,17 @@ injected, so 0 spikes flagged is the correct/honest result on this dataset,
 not a failure of the detector.
 
 ## What broke
-_Keep this updated as you build — the application asks for it. Don't
-reconstruct it from memory at the end._
+Started with a plain logistic regression baseline to get one clean
+end-to-end pipeline working first — train, evaluate, save — before
+touching anything complex. Once that ran correctly, upgraded to a
+cross-validated XGBoost + Random Forest ensemble with engineered features
+(log-transformed amount, hour-of-day) and cost-based threshold selection
+instead of accuracy. That two-stage approach (dumb-and-working before
+smart-and-optimized) is what let me catch a rolling-window spike-detection
+bug against a known-working baseline instead of debugging two new things
+at once.
+
+Separately: xgboost's 48MB install kept timing out on a slow connection —
+three failed attempts (ReadTimeoutError). Fixed with
+`--timeout 300 --no-cache-dir`. Also lost a full training run when my
+machine restarted mid-hyperparameter-search; no code issue, just reran it.
