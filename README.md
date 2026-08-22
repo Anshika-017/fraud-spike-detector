@@ -44,6 +44,10 @@ python src/spike_monitor.py   # rolling-window spike flags
   100:5 in favor of catching fraud, so the model deliberately over-flags —
   precision is lower than recall by design, not by accident.
 
+
+![Confusion Matrix](plots/confusion_matrix.png)
+![PR Curve](plots/pr_curve.png)
+
 ## Spike monitor
 Test window only spans ~8 hourly buckets with no artificial fraud burst
 injected, so 0 spikes flagged is the correct/honest result on this dataset,
