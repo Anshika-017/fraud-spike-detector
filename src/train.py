@@ -1,14 +1,4 @@
-"""Fraud classifier: cross-validated XGBoost + Random Forest ensemble.
-
-Why an ensemble: XGBoost and Random Forest tend to make DIFFERENT mistakes
-on this dataset (boosting overfits to hard cases, forests are more
-conservative) — averaging their fraud-probability scores usually catches
-a few more true frauds without costing extra false alarms, versus either
-model alone.
-
-Why RandomizedSearchCV scored on PR-AUC (not accuracy): with 0.17% fraud,
-accuracy is meaningless — PR-AUC is what actually tracks whether the model
-is good at finding the rare class."""
+"""Fraud classifier: cross-validated XGBoost + Random Forest ensemble."""
 import os
 import joblib
 import numpy as np
